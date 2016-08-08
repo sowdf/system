@@ -1,0 +1,109 @@
+<%- include header.ejs %>
+<link rel="stylesheet" href="/javascripts/pickerDateRange/monthPicker.css">
+
+<!--main-container-part-->
+<div id="content">
+    <form action="" id="j-form">
+        <ul>
+            <li>
+                <div class="ta_date" id="div_month_picker">
+                    <span class="date_title" id="month_picker">2016-08</span>
+                    <a class="opt_sel" id="month_trigger" href="javascript:;">
+                        <i class="i_orderd"></i>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <span>月度效率分：</span> <input type="text" name="efficiency">
+            </li>
+            <li>
+                <span>月度质量分：</span> <input type="text" name="mass">
+            </li>
+            <li>
+                <span>月度贡献分：</span> <input type="text" name="sicence">
+            </li>
+            <li>
+                <span>月度成长分：</span> <input type="text" name="grown">
+            </li>
+            <li>
+                <span>月度总结：</span> <input type="text" name="summed">
+            </li>
+        </ul>
+        <a href="javascript:;" id="j-submit">提交</a>
+    </form>
+</div>
+<%- include footer.ejs %>
+<!--end-main-container-part-->
+
+<script src="/javascripts/excanvas.min.js"></script>
+<script src="/javascripts/jquery.min.js"></script>
+<script src="/javascripts/pickerDateRange/monthPicker.js"></script>
+<script src="/javascripts/jquery.ui.custom.js"></script>
+<script src="/javascripts/bootstrap.min.js"></script>
+<script src="/javascripts/jquery.flot.min.js"></script>
+<script src="/javascripts/jquery.flot.resize.min.js"></script>
+<script src="/javascripts/jquery.peity.min.js"></script>
+<script src="/javascripts/fullcalendar.min.js"></script>
+<script src="/javascripts/matrix.js"></script>
+<script src="/javascripts/matrix.dashboard.js"></script>
+<script src="/javascripts/jquery.gritter.min.js"></script>
+<script src="/javascripts/matrix.interface.js"></script>
+<script src="/javascripts/matrix.chat.js"></script>
+<script src="/javascripts/jquery.validate.js"></script>
+<script src="/javascripts/matrix.form_validation.js"></script>
+<script src="/javascripts/jquery.wizard.js"></script>
+<script src="/javascripts/jquery.uniform.js"></script>
+<script src="/javascripts/select2.min.js"></script>
+<script src="/javascripts/matrix.popover.js"></script>
+<script src="/javascripts/jquery.dataTables.min.js"></script>
+<script src="/javascripts/matrix.tables.js"></script>
+
+<script type="text/javascript">
+    // This function is called from the pop-up menus to transfer to
+    // a different page. Ignore if the value returned is a null string:
+    function goPage (newURL) {
+
+        // if url is empty, skip the menu dividers and reset the menu selection to default
+        if (newURL != "") {
+
+            // if url is "-", it is this page -- reset the menu:
+            if (newURL == "-" ) {
+                resetMenu();
+            }
+            // else, send page to designated URL
+            else {
+                document.location.href = newURL;
+            }
+        }
+    }
+
+    // resets the menu selection upon entry to this page:
+    function resetMenu() {
+        document.gomenu.selector.selectedIndex = 2;
+    }
+    /* 日期控件 */
+    monthPicker.create('month_picker', {
+        trigger : 'month_trigger',
+        autoCommit : true,
+        callback : function(obj){
+
+        }
+    });
+
+    $('#j-submit').on('click',function(){
+        var data  =  JSON.stringify($('#j-form').serializeArray());
+        $.ajax({
+            url : '/appraisal/interface-rated',
+            type : 'POST',
+            data : {data:data},
+            dataType : 'json',
+            success :function(res){
+
+            }
+        });
+    })
+
+
+
+</script>
+
