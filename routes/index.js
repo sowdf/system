@@ -7,7 +7,7 @@ var crypto = require('crypto'),
 module.exports = function(app) {
   app.get('/',check.checkLogin);
   app.get('/', function (req, res) {
-    res.render('index', { title: '主页' });
+    res.render('index');
   });
 
   app.get('/reg',check.checkNotLogin);
