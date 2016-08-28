@@ -8,7 +8,6 @@ module.exports.post = function(req, res) {
     var email = req.body.email,
         password = req.body.password;
     //生成密码的 md5 值
-    console.log(333333);
     var md5 = crypto.createHash('md5'),
         password = md5.update(req.body.password).digest('hex');
     var newUser = new User({

@@ -29,6 +29,7 @@
                 <span>月度总结：</span> <input type="text" name="summed">
             </li>
         </ul>
+        <input type="hidden" name="date" id="j-date">
         <a href="javascript:;" id="j-submit">提交</a>
     </form>
 </div>
@@ -86,7 +87,7 @@
         trigger : 'month_trigger',
         autoCommit : true,
         callback : function(obj){
-
+            $('#j-date').val(obj);
         }
     });
 
