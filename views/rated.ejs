@@ -4,7 +4,7 @@
 <!--main-container-part-->
 <div id="content">
     <form action="" id="j-form">
-        <ul>
+        <ul id="j-rated">
             <li>
                 <div class="ta_date" id="div_month_picker">
                     <span class="date_title" id="month_picker">2016-08</span>
@@ -14,23 +14,23 @@
                 </div>
             </li>
             <li>
-                <span>月度效率分：</span> <input type="text" name="efficiency">
+                <span>月度效率分：</span> <input type="text" name="efficiency" v-model="efficiency">
             </li>
             <li>
-                <span>月度质量分：</span> <input type="text" name="mass">
+                <span>月度质量分：</span> <input type="text" name="mass" v-model="mass">
             </li>
             <li>
-                <span>月度贡献分：</span> <input type="text" name="sicence">
+                <span>月度贡献分：</span> <input type="text" name="sicence" v-model="sicence">
             </li>
             <li>
-                <span>月度成长分：</span> <input type="text" name="grown">
+                <span>月度成长分：</span> <input type="text" name="grown" v-model="grown">
             </li>
             <li>
-                <span>月度总结：</span> <input type="text" name="summed">
+                <span>月度总结：</span> <textarea type="text" name="summed" v-model="summed"></textarea>
             </li>
         </ul>
         <input type="hidden" name="date" id="j-date">
-        <a href="javascript:;" id="j-submit">提交</a>
+        <a href="javascript:;" id="j-submit" class="btn">提交</a>
     </form>
 </div>
 <%- include footer.ejs %>
@@ -58,6 +58,16 @@
 <script src="/javascripts/matrix.popover.js"></script>
 <script src="/javascripts/jquery.dataTables.min.js"></script>
 <script src="/javascripts/matrix.tables.js"></script>
+<script src="/javascripts/vue.min.js"></script>
+<script src="/javascripts/layer/layer.js"></script>
+<script charset="utf-8" src="/KindEditor/kindeditor-min.js"></script>
+<script charset="utf-8" src="/KindEditor/lang/zh_CN.js"></script>
+<script>
+    var editor;
+    KindEditor.ready(function(K) {
+        editor = K.create('#kindeditor');
+    });
+</script>
 
 <script type="text/javascript">
     // This function is called from the pop-up menus to transfer to
@@ -90,16 +100,37 @@
             $('#j-date').val(obj);
         }
     });
-
+    var data = {
+        efficiency : '',
+        mass : '',
+        sicence : '',
+        grown : '',
+        summed : ''
+    };
+    var vm = new Vue({
+        el : '#j-rated',
+        data : data
+    });
     $('#j-submit').on('click',function(){
-        var data  =  JSON.stringify($('#j-form').serializeArray());
+        var date = $('#j-date').val();
+        var postData = JSON.parse(JSON.stringify(vm.$data));
+        postData.date = date;
+        console.log(postData);
+        var data  = JSON.stringify(postData);
+        console.log(data);
         $.ajax({
             url : '/appraisal/interface-rated',
             type : 'POST',
             data : {data:data},
             dataType : 'json',
             success :function(res){
-
+                if(res.code == 100){
+                    layer.msg(res.msg,function(){
+                        location.href = '/appraisal/rated-list';
+                    });
+                    return;
+                }
+                layer.msg(res.msg);
             }
         });
     })

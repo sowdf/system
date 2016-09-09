@@ -4,7 +4,7 @@ module.exports.checkLogin = function(req, res, next) {
         res.redirect('/login');
     }
     next();
-}
+};
 
 module.exports.checkNotLogin = function (req, res, next) {
     if (req.session.user) {
@@ -12,4 +12,4 @@ module.exports.checkNotLogin = function (req, res, next) {
         res.redirect('back');
     }
     next();
-}
+};

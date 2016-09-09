@@ -33,8 +33,7 @@ module.exports.getContent = function(req,res){
         }
         res.render('content', {
             title: '自评列表',
-            content : doc.summed,
-            date : doc.date
+            rated : doc
         })
     });
 
@@ -44,16 +43,25 @@ module.exports.getRated = function(req,res){
     res.render('rated', { title: '自评' });
 };
 module.exports.postRated = function(req,res){
-    var data =  eval(req.body.data);
-    var rated = {};
-    for(let item of data){
-        //console.log(item);
-        rated[item.name] = item.value;
+    console.log(req.body.data);
+    var isSubmit = true;
+    var rated =  JSON.parse(req.body.data);
+    for(var key in rated){
+        if(rated[key] == ''){
+            isSubmit = false;
+        }
     }
+    if(!isSubmit){
+        return res.json({
+            code : 99,
+            result : {},
+            msg : '提交的数据有误!'
+        });
+    }
+
     rated.email = req.session.user.email;
     var newRated = new Rated(rated);
     Rated.get(rated.email,rated.date,function(err,data){
-        console.log(data);
         if(err){
             res.json({
                 code : 97,

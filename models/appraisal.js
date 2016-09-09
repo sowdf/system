@@ -22,7 +22,8 @@ Rated.prototype.save = function(callback) {
         mass : this.mass,
         sicence : this.sicence,
         grown : this.grown,
-        summed : this.summed
+        summed : this.summed,
+        comment : {}
     };
     //打开数据库
     mongodb.open(function (err, db) {

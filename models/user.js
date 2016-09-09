@@ -44,7 +44,6 @@ User.prototype.save = function(callback) {
 //读取用户信息
 User.get = function(email, callback) {
     //打开数据库
-    var result = null;
     mongodb.open(function (err, db) {
         if (err) {
             return callback(err);//错误，返回 err 信息
@@ -69,6 +68,7 @@ User.get = function(email, callback) {
 };
 
 User.getAdmin = function(email, callback){
+    console.log(email);
     mongodb.open(function (err, db) {
         if (err) {
             return callback(err);//错误，返回 err 信息

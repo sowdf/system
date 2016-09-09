@@ -3,30 +3,46 @@ var crypto = require('crypto'),
 module.exports.get = function(req, res) {
     res.render('login', {
         title: '登录',
-        user: req.session.user,
         success: req.flash('success').toString(),
-        error: req.flash('error').toString()});
+        error: req.flash('error').toString()})
 
 };
 module.exports.post = function(req, res) {
     //生成密码的 md5 值
     var md5 = crypto.createHash('md5'),
-        password = md5.update(req.body.password).digest('hex');
+        password = md5.update(req.body.password).digest('hex'),
+        email = req.body.email;
     //检查用户是否存在
-    User.get(req.body.email, function (err, user) {
+    User.getAdmin(email, function (err, user) {
         if (!user) {
-            req.flash('error', '用户不存在!');
-            return res.redirect('/login');//用户不存在则跳转到登录页
+            User.get(email, function (err, user) {
+                if (!user) {
+                    req.flash('error', '用户不存在!');
+                    return res.redirect('/login');//用户不存在则跳转到登录页
+                }
+                //检查密码是否一致
+                if (user.password != password) {
+                    req.flash('error', '密码错误!');
+                    return res.redirect('/login');//密码错误则跳转到登录页
+                }
+                //用户名密码都匹配后，将用户信息存入 session
+                req.session.user = user;
+                req.flash('success', '登陆成功!');
+                res.redirect('/');//登陆成功后跳转到主页
+            });
+            return;
         }
         //检查密码是否一致
         if (user.password != password) {
             req.flash('error', '密码错误!');
             return res.redirect('/login');//密码错误则跳转到登录页
         }
+        isAdmin = true;
         //用户名密码都匹配后，将用户信息存入 session
         req.session.user = user;
         req.flash('success', '登陆成功!');
         res.redirect('/');//登陆成功后跳转到主页
     });
+
 
 };

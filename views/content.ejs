@@ -1,10 +1,70 @@
 <%- include header.ejs %>
 <!--main-container-part-->
 <div id="content">
-    <h1><%=date%></h1>
-    <div>
-        <%-content%>
-    </div>
+    <h1><%=rated.date%></h1>
+    <table>
+        <tr>
+            <th><%=rated.date%></th>
+            <th>自评</th>
+            <th>国宝</th>
+        </tr>
+        <tr>
+            <td>
+                月度效率分
+            </td>
+            <td>
+                <%=rated.efficiency%>
+            </td>
+            <td>
+                <%=rated.comment.efficiency%>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                月度质量分
+            </td>
+            <td>
+                <%=rated.mass%>
+            </td>
+            <td>
+                <%=rated.comment.mass%>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                月度贡献分
+            </td>
+            <td>
+                <%=rated.sicence%>
+            </td>
+            <td>
+                <%=rated.comment.sicence%>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                月度成长分
+            </td>
+            <td>
+                <%=rated.grown%>
+            </td>
+            <td>
+                <%=rated.comment.grown%>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                月度总结
+            </td>
+            <td>
+                <%-rated.summed%>
+            </td>
+            <td>
+                <%-rated.comment.summed%>
+            </td>
+        </tr>
+
+    </table>
 </div>
 <%- include footer.ejs %>
 <!--end-main-container-part-->
